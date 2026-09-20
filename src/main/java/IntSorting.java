@@ -23,61 +23,93 @@ public class IntSorting {
     *           command line parameters
     */
    public static void main(String[] args) {
-      final int[] origArray = new int[MAX_SIZE];
-      Random generator = new Random();
-      for (int i = 0; i < MAX_SIZE; i++) {
-         origArray[i] = generator.nextInt(1000);
+      int numberRolls = 10;
+      long[][] in_sort = new long[NUMBER_OF_ROUNDS][numberRolls];
+      long[][] bin_in_sort = new long[NUMBER_OF_ROUNDS][numberRolls];
+      long[][] quicksort = new long[NUMBER_OF_ROUNDS][numberRolls];
+      long[][] java_api_sort = new long[NUMBER_OF_ROUNDS][numberRolls];
+      long[][] radix_sort = new long[NUMBER_OF_ROUNDS][numberRolls];
+      for (int x = 0; x < numberRolls; x++) {
+         final int[] origArray = new int[MAX_SIZE];
+         Random generator = new Random();
+         for (int i = 0; i < MAX_SIZE; i++) {
+            origArray[i] = generator.nextInt(1000);
+         }
+         int rightLimit = MAX_SIZE / (int) Math.pow(2., NUMBER_OF_ROUNDS);
+
+         // Start a competition
+         for (int round = 0; round < NUMBER_OF_ROUNDS; round++) {
+            int[] acopy;
+            long stime, ftime, diff;
+            rightLimit = 2 * rightLimit;
+            System.out.println();
+            System.out.println("Length: " + rightLimit);
+
+            acopy = Arrays.copyOf(origArray, rightLimit);
+            stime = System.nanoTime();
+            insertionSort(acopy);
+            ftime = System.nanoTime();
+            diff = ftime - stime;
+            in_sort[round][x] = diff;
+            System.out.printf("%34s%11d%n", "Insertion sort: time (ms): ", diff / 1000000);
+            checkOrder(acopy);
+
+            acopy = Arrays.copyOf(origArray, rightLimit);
+            stime = System.nanoTime();
+            binaryInsertionSort(acopy);
+            ftime = System.nanoTime();
+            diff = ftime - stime;
+            bin_in_sort[round][x] = diff;
+            System.out.printf("%34s%11d%n", "Binary insertion sort: time (ms): ", diff / 1000000);
+            checkOrder(acopy);
+
+            acopy = Arrays.copyOf(origArray, rightLimit);
+            stime = System.nanoTime();
+            quickSort(acopy, 0, acopy.length);
+            ftime = System.nanoTime();
+            diff = ftime - stime;
+            quicksort[round][x] = diff;
+            System.out.printf("%34s%11d%n", "Quicksort: time (ms): ", diff / 1000000);
+            checkOrder(acopy);
+
+            acopy = Arrays.copyOf(origArray, rightLimit);
+            stime = System.nanoTime();
+            Arrays.sort(acopy);
+            ftime = System.nanoTime();
+            diff = ftime - stime;
+            java_api_sort[round][x] = diff;
+            System.out.printf("%34s%11d%n", "Java API  Arrays.sort: time (ms): ", diff / 1000000);
+            checkOrder(acopy);
+
+            acopy = Arrays.copyOf(origArray, rightLimit);
+            stime = System.nanoTime();
+            radixSort(acopy);
+            ftime = System.nanoTime();
+            diff = ftime - stime;
+            radix_sort[round][x] = diff;
+            System.out.printf("%34s%11d%n", "Radix sort: time (ms): ", diff / 1000000);
+            checkOrder(acopy);
+         }
       }
-      int rightLimit = MAX_SIZE / (int) Math.pow(2., NUMBER_OF_ROUNDS);
 
-      // Start a competition
-      for (int round = 0; round < NUMBER_OF_ROUNDS; round++) {
-         int[] acopy;
-         long stime, ftime, diff;
-         rightLimit = 2 * rightLimit;
-         System.out.println();
-         System.out.println("Length: " + rightLimit);
+      System.out.println(getAvgMs(in_sort));
+      System.out.println(getAvgMs(bin_in_sort));
+      System.out.println(getAvgMs(quicksort));
+      System.out.println(getAvgMs(java_api_sort));
+      System.out.println(getAvgMs(radix_sort));
+   }
 
-         acopy = Arrays.copyOf(origArray, rightLimit);
-         stime = System.nanoTime();
-         insertionSort(acopy);
-         ftime = System.nanoTime();
-         diff = ftime - stime;
-         System.out.printf("%34s%11d%n", "Insertion sort: time (ms): ", diff / 1000000);
-         checkOrder(acopy);
-
-         acopy = Arrays.copyOf(origArray, rightLimit);
-         stime = System.nanoTime();
-         binaryInsertionSort(acopy);
-         ftime = System.nanoTime();
-         diff = ftime - stime;
-         System.out.printf("%34s%11d%n", "Binary insertion sort: time (ms): ", diff / 1000000);
-         checkOrder(acopy);
-
-         acopy = Arrays.copyOf(origArray, rightLimit);
-         stime = System.nanoTime();
-         quickSort(acopy, 0, acopy.length);
-         ftime = System.nanoTime();
-         diff = ftime - stime;
-         System.out.printf("%34s%11d%n", "Quicksort: time (ms): ", diff / 1000000);
-         checkOrder(acopy);
-
-         acopy = Arrays.copyOf(origArray, rightLimit);
-         stime = System.nanoTime();
-         Arrays.sort(acopy);
-         ftime = System.nanoTime();
-         diff = ftime - stime;
-         System.out.printf("%34s%11d%n", "Java API  Arrays.sort: time (ms): ", diff / 1000000);
-         checkOrder(acopy);
-
-         acopy = Arrays.copyOf(origArray, rightLimit);
-         stime = System.nanoTime();
-         radixSort(acopy);
-         ftime = System.nanoTime();
-         diff = ftime - stime;
-         System.out.printf("%34s%11d%n", "Radix sort: time (ms): ", diff / 1000000);
-         checkOrder(acopy);
+   private static String getAvgMs(long[][] results){
+      String result = "";
+      for (int i = 0; i < NUMBER_OF_ROUNDS; i++) {
+         long sum = 0;
+         for (int j = 0; j < results[i].length; j++) {
+            sum += results[i][j];
+         }
+         long avg = (sum / results[i].length) / 1000000;
+         result += avg + " ";
       }
+      return result;
    }
 
    /**
@@ -108,7 +140,62 @@ public class IntSorting {
     *           array to be sorted
     */
    public static void binaryInsertionSort(int[] a) {
-      // TODO!!! Your method here!
+      // get next element (key)
+      // take granted that so far has been sorted
+      // do binary search on sorted part to find 2 elements that where one is greater
+      // and other is smaller or element is equal.
+      // shift elements to right
+      // insert key in place
+
+      for (int i = 1; i < a.length; i++) {
+
+         // a[i] --> key
+
+         // binary search new place
+         // left end of sorted array
+         int l = 0;
+
+         // right end of sorted array, one less than key.
+         // must mind that key might stay in place.
+         int r = i - 1;
+
+         // new index for key
+         int resultIndex = i;
+
+         // loop until left and right meet
+         while (l <= r) {
+
+            // check left end
+            if (a[i] <= a[l]) {
+               resultIndex = l;
+               break;
+            }
+            // check right end
+            if (a[i] >= a[r]) {
+               resultIndex = r + 1;
+               break;
+            }
+
+            int k = (r + l) / 2;
+            if (a[i] > a[k]) {
+               // move more right
+               l = k + 1;
+            } else if (a[i] < a[k]) {
+               // move more left
+               r = k - 1;
+            } else {
+               resultIndex = k;
+               break;
+            }
+         }
+
+         // shift right
+         int key = a[i];
+         for (int j = i; j > resultIndex; j--) {
+            a[j] = a[j - 1];
+         }
+         a[resultIndex] = key;
+      }
    }
 
    /**
@@ -210,4 +297,3 @@ public class IntSorting {
    }
 
 }
-
