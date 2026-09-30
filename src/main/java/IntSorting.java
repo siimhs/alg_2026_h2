@@ -62,6 +62,15 @@ public class IntSorting {
             bin_in_sort[round][x] = diff;
             System.out.printf("%34s%11d%n", "Binary insertion sort: time (ms): ", diff / 1000000);
             checkOrder(acopy);
+
+            acopy = Arrays.copyOf(origArray, rightLimit);
+            stime = System.nanoTime();
+            javaBinarySearch(acopy);
+            ftime = System.nanoTime();
+            diff = ftime - stime;
+            bin_in_sort[round][x] = diff;
+            System.out.printf("%34s%11d%n", "Binary insertion sort: time (ms): ", diff / 1000000);
+            checkOrder(acopy);
          }
       }
 
@@ -83,6 +92,10 @@ public class IntSorting {
          result += avg + " ";
       }
       return result;
+   }
+
+   public static void javaBinarySearch(int[] a) {
+
    }
 
    /**
