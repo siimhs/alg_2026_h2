@@ -51,7 +51,7 @@ public class IntSorting {
             ftime = System.nanoTime();
             diff = ftime - stime;
             bin_in_sort[round][x] = diff;
-            System.out.printf("%34s%11d%n", "Binary insertion sort: time (ms): ", diff / 1000000);
+            System.out.printf("%34s%11d%n", "binaryInsertionSort insertion sort: time (ms): ", diff / 1000000);
             checkOrder(acopy);
 
             acopy = Arrays.copyOf(origArray, rightLimit);
@@ -60,7 +60,7 @@ public class IntSorting {
             ftime = System.nanoTime();
             diff = ftime - stime;
             bin_in_sort[round][x] = diff;
-            System.out.printf("%34s%11d%n", "Binary insertion sort: time (ms): ", diff / 1000000);
+            System.out.printf("%34s%11d%n", "binaryInsertionSortHugoBork insertion sort: time (ms): ", diff / 1000000);
             checkOrder(acopy);
 
             acopy = Arrays.copyOf(origArray, rightLimit);
@@ -69,7 +69,7 @@ public class IntSorting {
             ftime = System.nanoTime();
             diff = ftime - stime;
             bin_in_sort[round][x] = diff;
-            System.out.printf("%34s%11d%n", "Binary insertion sort: time (ms): ", diff / 1000000);
+            System.out.printf("%34s%11d%n", "javaBinarySearch insertion sort: time (ms): ", diff / 1000000);
             checkOrder(acopy);
          }
       }
@@ -95,7 +95,17 @@ public class IntSorting {
    }
 
    public static void javaBinarySearch(int[] a) {
-
+      if (a.length < 2)
+         return;
+      for (int i = 1; i < a.length; i++) {
+         int b = a[i];
+         int pos = Arrays.binarySearch(a, 0, i, a[i]);
+         if (pos < 0) {
+            pos = -pos - 1;
+         }
+         System.arraycopy(a, pos, a, pos + 1, i - pos);
+         a[pos] = b;
+      }
    }
 
    /**
