@@ -20,7 +20,7 @@ public class IntSorting {
     * Main method.
     *
     * @param args
-    *           command line parameters
+    *             command line parameters
     */
    public static void main(String[] args) {
       int numberRolls = 10;
@@ -99,7 +99,7 @@ public class IntSorting {
       System.out.println(getAvgMs(radix_sort));
    }
 
-   private static String getAvgMs(long[][] results){
+   private static String getAvgMs(long[][] results) {
       String result = "";
       for (int i = 0; i < NUMBER_OF_ROUNDS; i++) {
          long sum = 0;
@@ -116,7 +116,7 @@ public class IntSorting {
     * Insertion sort.
     *
     * @param a
-    *           array to be sorted
+    *          array to be sorted
     */
    public static void insertionSort(int[] a) {
       if (a.length < 2)
@@ -137,7 +137,7 @@ public class IntSorting {
     * Binary insertion sort.
     *
     * @param a
-    *           array to be sorted
+    *          array to be sorted
     */
    public static void binaryInsertionSort(int[] a) {
       // get next element (key)
@@ -223,13 +223,13 @@ public class IntSorting {
     * Sort a part of the array using quicksort method.
     *
     * @param array
-    *           array to be changed
+    *              array to be changed
     * @param l
-    *           starting index (included)
+    *              starting index (included)
     * @param r
-    *           ending index (excluded)
+    *              ending index (excluded)
     */
-   public static void quickSort (int[] array, int l, int r) {
+   public static void quickSort(int[] array, int l, int r) {
       if (array == null || array.length < 1 || l < 0 || r <= l)
          throw new IllegalArgumentException("quickSort: wrong parameters");
       if ((r - l) < 2)
@@ -303,9 +303,9 @@ public class IntSorting {
     * Check whether an array is ordered.
     *
     * @param a
-    *           sorted (?) array
+    *          sorted (?) array
     * @throws IllegalArgumentException
-    *            if an array is not ordered
+    *                                  if an array is not ordered
     */
    static void checkOrder(int[] a) {
       if (a.length < 2)
@@ -313,7 +313,7 @@ public class IntSorting {
       for (int i = 0; i < a.length - 1; i++) {
          if (a[i] > a[i + 1])
             throw new IllegalArgumentException(
-                    "array not ordered: " + "a[" + i + "]=" + a[i] + " a[" + (i + 1) + "]=" + a[i + 1]);
+                  "array not ordered: " + "a[" + i + "]=" + a[i] + " a[" + (i + 1) + "]=" + a[i + 1]);
       }
    }
 
