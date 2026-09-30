@@ -198,6 +198,27 @@ public class IntSorting {
       }
    }
 
+   public static void binaryInsertionSortHugoBork(int[] a) {
+      if (a.length < 2)
+         return;
+      for (int i = 1; i < a.length; i++) {
+         int b = a[i];
+         int j;
+         int left = 0;
+         int right = i - 1;
+         while (left <= right) {
+            j = (left + right) / 2;
+            if (b > a[j]) {
+               left = j + 1;
+            } else {
+               right = j - 1;
+            }
+         }
+         System.arraycopy(a, left, a, left + 1, i - left);
+         a[left] = b;
+      }
+   }
+
    /**
     * Sort a part of the array using quicksort method.
     *
