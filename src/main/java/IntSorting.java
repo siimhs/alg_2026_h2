@@ -47,15 +47,6 @@ public class IntSorting {
 
             acopy = Arrays.copyOf(origArray, rightLimit);
             stime = System.nanoTime();
-            insertionSort(acopy);
-            ftime = System.nanoTime();
-            diff = ftime - stime;
-            in_sort[round][x] = diff;
-            System.out.printf("%34s%11d%n", "Insertion sort: time (ms): ", diff / 1000000);
-            checkOrder(acopy);
-
-            acopy = Arrays.copyOf(origArray, rightLimit);
-            stime = System.nanoTime();
             binaryInsertionSort(acopy);
             ftime = System.nanoTime();
             diff = ftime - stime;
@@ -65,29 +56,11 @@ public class IntSorting {
 
             acopy = Arrays.copyOf(origArray, rightLimit);
             stime = System.nanoTime();
-            quickSort(acopy, 0, acopy.length);
+            binaryInsertionSortHugoBork(acopy);
             ftime = System.nanoTime();
             diff = ftime - stime;
-            quicksort[round][x] = diff;
-            System.out.printf("%34s%11d%n", "Quicksort: time (ms): ", diff / 1000000);
-            checkOrder(acopy);
-
-            acopy = Arrays.copyOf(origArray, rightLimit);
-            stime = System.nanoTime();
-            Arrays.sort(acopy);
-            ftime = System.nanoTime();
-            diff = ftime - stime;
-            java_api_sort[round][x] = diff;
-            System.out.printf("%34s%11d%n", "Java API  Arrays.sort: time (ms): ", diff / 1000000);
-            checkOrder(acopy);
-
-            acopy = Arrays.copyOf(origArray, rightLimit);
-            stime = System.nanoTime();
-            radixSort(acopy);
-            ftime = System.nanoTime();
-            diff = ftime - stime;
-            radix_sort[round][x] = diff;
-            System.out.printf("%34s%11d%n", "Radix sort: time (ms): ", diff / 1000000);
+            bin_in_sort[round][x] = diff;
+            System.out.printf("%34s%11d%n", "Binary insertion sort: time (ms): ", diff / 1000000);
             checkOrder(acopy);
          }
       }
